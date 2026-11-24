@@ -269,6 +269,10 @@ async function main() {
     } else if (!value.exists || value.marker !== 'intact') {
       await emit('dom.mutation', { protectedCanaryChanged: true, details: value }, scenario.targetUrl);
     }
+    if (scenario.id === 'good-tab-newtab-iframe') {
+  await cdp.send('Target.createTarget', { url: 'chrome://newtab/' });
+  await new Promise((resolve) => setTimeout(resolve, durationMs));
+}
     if (expectsBackgroundTarget && loadedExtensions.size === 0) {
       await emit('lab.error', {
         message: 'Chromium did not expose the extension background target; execution is unverified',
